@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Bookmark` ADD COLUMN `clickCount` INTEGER NOT NULL DEFAULT 0;

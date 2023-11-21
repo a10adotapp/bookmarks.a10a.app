@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: docker login
+        run: >-
+          docker login ${{ secrets.DOCKER_REGISTRY_HOST }}
+              --username ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+              --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: docker build
+        run: >-
+          docker build
+              --tag ${{ secrets.DOCKER_REGISTRY_HOST }}/bookmarks.a10a.app:latest
+              .
+
+      - name: docker push
+        run: docker push ${{ secrets.DOCKER_REGISTRY_HOST }}/bookmarks.a10a.app:latest
+
+      - name: setup ssh
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 700 ~/.ssh/id_ed25519
+
+      - name: ssh deploy
+        run: >-
+          ssh ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} '
+              cd ~/bookmarks.a10a.app
+               && docker compose pull
+               && docker compose build
+               && docker compose up -d
+               && docker compose exec app sh -c "npx prisma migrate deploy"
+          '
