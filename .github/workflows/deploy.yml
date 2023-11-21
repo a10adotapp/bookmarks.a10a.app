@@ -14,17 +14,17 @@ jobs:
           persist-credentials: false
 
       - name: docker login
-        run: >-
-          echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
-           | docker login
-              --username ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-              --password-stdin
+        run: |
+          echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" \
+           | docker login \
+              --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
+              --password-stdin \
               ${{ secrets.DOCKER_REGISTRY_HOST }}
 
       - name: docker build
-        run: >-
-          docker build
-              --tag ${{ secrets.DOCKER_REGISTRY_HOST }}/bookmarks.a10a.app:latest
+        run: |
+          docker build \
+              --tag ${{ secrets.DOCKER_REGISTRY_HOST }}/bookmarks.a10a.app:latest \
               .
 
       - name: docker push
@@ -38,11 +38,11 @@ jobs:
           chmod 700 ~/.ssh/id_ed25519
 
       - name: ssh deploy
-        run: >-
-          ssh ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} '
-              cd ~/bookmarks.a10a.app
-               && docker compose pull
-               && docker compose build
-               && docker compose up -d
-               && docker compose exec app sh -c "npx prisma migrate deploy"
+        run: |
+          ssh ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} ' \
+              cd ~/bookmarks.a10a.app \
+               && docker compose pull \
+               && docker compose build \
+               && docker compose up -d \
+               && docker compose exec app sh -c "npx prisma migrate deploy" \
           '
