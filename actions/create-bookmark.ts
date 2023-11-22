@@ -1,23 +1,23 @@
 "use server";
 
+import { auth } from "@/lib/auth/auth";
 import { sharedClient } from "@/lib/prisma-client";
 import { Bookmark } from "@/prisma/client";
 import { JSDOM } from "jsdom";
 import { ActionResult } from "./action-result";
-import { downloadImage } from "./download-image";
 
-export async function createBookmark({
-  userId,
-  url,
-}: {
-  userId: string;
-  url: string;
-}): Promise<
+export async function createBookmark({ url }: { url: string }): Promise<
   ActionResult<{
     bookmark: Bookmark;
   }>
 > {
   try {
+    const session = await auth();
+
+    if (!session) {
+      throw new Error("unauthorized");
+    }
+
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -30,22 +30,12 @@ export async function createBookmark({
 
     const dom = new JSDOM(responseData);
 
-    let imageUrl = await newImageUrls(dom, new URL(url));
-
-    if (imageUrl) {
-      const imageDownloaded = await downloadImage(imageUrl, "bookmarks");
-
-      if (imageDownloaded.success) {
-        imageUrl = imageDownloaded.result.imageUrl;
-      }
-    }
-
     const bookmark = await sharedClient.bookmark.create({
       data: {
-        userId,
+        userId: session.user.id,
         url,
         title: dom.window.document.title,
-        imageUrl,
+        imageUrl: await newImageUrl(dom, new URL(url)),
       },
     });
 
@@ -65,7 +55,7 @@ export async function createBookmark({
   }
 }
 
-async function newImageUrls(
+async function newImageUrl(
   dom: JSDOM,
   baseUrl: URL,
 ): Promise<string | undefined> {

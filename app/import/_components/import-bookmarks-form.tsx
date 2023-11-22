@@ -58,7 +58,7 @@ const initialImportState: ImportState = {
   data: [],
 };
 
-export function ImportBookmarksForm({ userId }: { userId: string }) {
+export function ImportBookmarksForm() {
   const [importState, setImportState] = useReducer<
     Reducer<ImportState, ImportStateReducerAction>
   >((prevState, action) => {
@@ -94,72 +94,69 @@ export function ImportBookmarksForm({ userId }: { userId: string }) {
     },
   });
 
-  const submit = useCallback(
-    async (inputs: FormInputs) => {
-      setFormDisabled(true);
+  const submit = useCallback(async (inputs: FormInputs) => {
+    setFormDisabled(true);
 
-      const file = fileFieldRef.current?.files?.[0];
+    const file = fileFieldRef.current?.files?.[0];
 
-      if (!file) {
-        setFormDisabled(false);
+    if (!file) {
+      setFormDisabled(false);
 
-        return toast.error("Failed to read file");
-      }
+      return toast.error("Failed to read file");
+    }
 
-      const fileReader = new FileReader();
+    const fileReader = new FileReader();
 
-      fileReader.addEventListener("load", async () => {
-        await toast.promise(
-          new Promise(async (resolve, reject) => {
-            if (typeof fileReader.result !== "string") {
-              return reject("file must be formatted as JSON");
-            }
+    fileReader.addEventListener("load", async () => {
+      await toast.promise(
+        new Promise(async (resolve, reject) => {
+          if (typeof fileReader.result !== "string") {
+            return reject("file must be formatted as JSON");
+          }
 
-            const data = JSON.parse(fileReader.result);
+          const data = JSON.parse(fileReader.result);
 
-            if (!Array.isArray(data)) {
-              return reject("file content must be an array");
-            }
+          if (!Array.isArray(data)) {
+            return reject("file content must be an array");
+          }
+
+          setImportState({
+            kind: "set-total",
+            value: data.length,
+          });
+
+          for (const url of data.map((dataItem) => `${dataItem}`)) {
+            const bookmarkCreated = await createBookmark({ url });
 
             setImportState({
-              kind: "set-total",
-              value: data.length,
+              kind: "push",
+              dataItem: {
+                url,
+                error: bookmarkCreated.success
+                  ? undefined
+                  : bookmarkCreated.error.message,
+              },
             });
+          }
 
-            for (const url of data.map((dataItem) => `${dataItem}`)) {
-              const bookmarkCreated = await createBookmark({ userId, url });
-
-              setImportState({
-                kind: "push",
-                dataItem: {
-                  url,
-                  error: bookmarkCreated.success
-                    ? undefined
-                    : bookmarkCreated.error.message,
-                },
-              });
-            }
-
-            return resolve(undefined);
-          }),
-          {
-            loading: "Importing...",
-            success: (data) => {
-              return "Finished!";
-            },
-            error: (err) => {
-              return `${err}`;
-            },
+          return resolve(undefined);
+        }),
+        {
+          loading: "Importing...",
+          success: (data) => {
+            return "Finished!";
           },
-        );
+          error: (err) => {
+            return `${err}`;
+          },
+        },
+      );
 
-        setFormDisabled(false);
-      });
+      setFormDisabled(false);
+    });
 
-      fileReader.readAsText(file);
-    },
-    [userId],
-  );
+    fileReader.readAsText(file);
+  }, []);
 
   return (
     <div className="flex flex-col gap-2">

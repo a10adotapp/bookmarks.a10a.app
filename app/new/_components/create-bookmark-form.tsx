@@ -24,7 +24,7 @@ const formSchema = z.object({
 
 type FormInputs = z.infer<typeof formSchema>;
 
-export function CreateBookmarkForm({ userId }: { userId: string }) {
+export function CreateBookmarkForm() {
   const router = useRouter();
 
   const form = useForm<FormInputs>({
@@ -34,7 +34,7 @@ export function CreateBookmarkForm({ userId }: { userId: string }) {
   const submit = useCallback(
     async (inputs: FormInputs) => {
       const bookmarkCreated = await toast.promise(
-        createBookmark({ userId, url: inputs.url }),
+        createBookmark({ url: inputs.url }),
         {
           loading: "Saving...",
           success: (data) => {
@@ -55,7 +55,7 @@ export function CreateBookmarkForm({ userId }: { userId: string }) {
         router.refresh();
       }
     },
-    [router, userId],
+    [router],
   );
 
   return (

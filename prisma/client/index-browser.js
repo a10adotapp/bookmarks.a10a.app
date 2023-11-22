@@ -151,7 +151,8 @@ exports.Prisma.BookmarkScalarFieldEnum = {
   imageUrl: 'imageUrl',
   clickCount: 'clickCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.SortOrder = {

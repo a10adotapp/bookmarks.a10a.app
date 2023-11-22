@@ -5,12 +5,10 @@ import { sharedClient } from "@/lib/prisma-client";
 import { Bookmark } from "@/prisma/client";
 import { ActionResult } from "./action-result";
 
-export async function updateBookmark({
+export async function deleteBookmark({
   bookmark,
-  clickCount,
 }: {
   bookmark: Bookmark;
-  clickCount?: number;
 }): Promise<
   ActionResult<{
     bookmark: Bookmark;
@@ -29,7 +27,7 @@ export async function updateBookmark({
         userId: session.user.id,
       },
       data: {
-        clickCount,
+        deletedAt: new Date(),
       },
     });
 

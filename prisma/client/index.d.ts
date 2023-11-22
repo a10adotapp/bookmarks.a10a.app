@@ -5045,6 +5045,7 @@ export namespace Prisma {
     clickCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type BookmarkMaxAggregateOutputType = {
@@ -5056,6 +5057,7 @@ export namespace Prisma {
     clickCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type BookmarkCountAggregateOutputType = {
@@ -5067,6 +5069,7 @@ export namespace Prisma {
     clickCount: number
     createdAt: number
     updatedAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -5090,6 +5093,7 @@ export namespace Prisma {
     clickCount?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type BookmarkMaxAggregateInputType = {
@@ -5101,6 +5105,7 @@ export namespace Prisma {
     clickCount?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type BookmarkCountAggregateInputType = {
@@ -5112,6 +5117,7 @@ export namespace Prisma {
     clickCount?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -5210,6 +5216,7 @@ export namespace Prisma {
     clickCount: number
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
     _count: BookmarkCountAggregateOutputType | null
     _avg: BookmarkAvgAggregateOutputType | null
     _sum: BookmarkSumAggregateOutputType | null
@@ -5240,6 +5247,7 @@ export namespace Prisma {
     clickCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmark"]>
 
@@ -5252,6 +5260,7 @@ export namespace Prisma {
     clickCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }
 
   export type BookmarkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5273,6 +5282,7 @@ export namespace Prisma {
       clickCount: number
       createdAt: Date
       updatedAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["bookmark"]>
     composites: {}
   }
@@ -5676,6 +5686,7 @@ export namespace Prisma {
     readonly clickCount: FieldRef<"Bookmark", 'Int'>
     readonly createdAt: FieldRef<"Bookmark", 'DateTime'>
     readonly updatedAt: FieldRef<"Bookmark", 'DateTime'>
+    readonly deletedAt: FieldRef<"Bookmark", 'DateTime'>
   }
     
 
@@ -6073,7 +6084,8 @@ export namespace Prisma {
     imageUrl: 'imageUrl',
     clickCount: 'clickCount',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
   export type BookmarkScalarFieldEnum = (typeof BookmarkScalarFieldEnum)[keyof typeof BookmarkScalarFieldEnum]
@@ -6390,6 +6402,7 @@ export namespace Prisma {
     clickCount?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
     updatedAt?: DateTimeFilter<"Bookmark"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
     User?: XOR<UserRelationFilter, UserWhereInput>
   }
 
@@ -6402,6 +6415,7 @@ export namespace Prisma {
     clickCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     User?: UserOrderByWithRelationInput
   }
 
@@ -6417,6 +6431,7 @@ export namespace Prisma {
     clickCount?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
     updatedAt?: DateTimeFilter<"Bookmark"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
     User?: XOR<UserRelationFilter, UserWhereInput>
   }, "id">
 
@@ -6429,6 +6444,7 @@ export namespace Prisma {
     clickCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: BookmarkCountOrderByAggregateInput
     _avg?: BookmarkAvgOrderByAggregateInput
     _max?: BookmarkMaxOrderByAggregateInput
@@ -6448,6 +6464,7 @@ export namespace Prisma {
     clickCount?: IntWithAggregatesFilter<"Bookmark"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Bookmark"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Bookmark"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Bookmark"> | Date | string | null
   }
 
   export type AccountCreateInput = {
@@ -6719,6 +6736,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     User: UserCreateNestedOneWithoutBookmarksInput
   }
 
@@ -6731,6 +6749,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type BookmarkUpdateInput = {
@@ -6740,6 +6759,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     User?: UserUpdateOneRequiredWithoutBookmarksNestedInput
   }
 
@@ -6752,6 +6772,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BookmarkCreateManyInput = {
@@ -6763,6 +6784,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type BookmarkUpdateManyMutationInput = {
@@ -6772,6 +6794,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BookmarkUncheckedUpdateManyInput = {
@@ -6783,6 +6806,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7110,6 +7134,7 @@ export namespace Prisma {
     clickCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type BookmarkAvgOrderByAggregateInput = {
@@ -7126,6 +7151,7 @@ export namespace Prisma {
     clickCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type BookmarkMinOrderByAggregateInput = {
@@ -7137,6 +7163,7 @@ export namespace Prisma {
     clickCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type BookmarkSumOrderByAggregateInput = {
@@ -7727,6 +7754,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type BookmarkUncheckedCreateWithoutUserInput = {
@@ -7737,6 +7765,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type BookmarkCreateOrConnectWithoutUserInput = {
@@ -7837,6 +7866,7 @@ export namespace Prisma {
     clickCount?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
     updatedAt?: DateTimeFilter<"Bookmark"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
   }
 
   export type UserCreateWithoutBookmarksInput = {
@@ -7923,6 +7953,7 @@ export namespace Prisma {
     clickCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -7992,6 +8023,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BookmarkUncheckedUpdateWithoutUserInput = {
@@ -8002,6 +8034,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BookmarkUncheckedUpdateManyWithoutUserInput = {
@@ -8012,6 +8045,7 @@ export namespace Prisma {
     clickCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 
