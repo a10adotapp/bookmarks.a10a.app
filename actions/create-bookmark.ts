@@ -18,7 +18,9 @@ export async function createBookmark({ url }: { url: string }): Promise<
       throw new Error("unauthorized");
     }
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(5000),
+    });
 
     if (!response.ok) {
       throw new Error(
@@ -75,8 +77,29 @@ async function newImageUrl(
     return imageUrl;
   }
 
-  imageUrl = Array.from(dom.window.document.querySelectorAll("img")).map(
-    (img) => {
+  console.log(
+    Array.from(dom.window.document.querySelectorAll("img")).map(
+      (img) => img.src,
+    ),
+  );
+
+  imageUrl = Array.from(dom.window.document.querySelectorAll("img"))
+    .filter((img) => {
+      if (!img.src) {
+        return false;
+      }
+
+      if (img.src.includes(".svg")) {
+        return false;
+      }
+
+      if (img.src.includes(".gif")) {
+        return false;
+      }
+
+      return true;
+    })
+    .map((img) => {
       if (img.src.startsWith("//")) {
         return baseUrl.protocol + img.src;
       }
@@ -86,8 +109,7 @@ async function newImageUrl(
       }
 
       return img.src;
-    },
-  )[0];
+    })[0];
 
   if (imageUrl) {
     return imageUrl;

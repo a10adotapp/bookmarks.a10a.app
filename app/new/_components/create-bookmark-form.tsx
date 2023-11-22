@@ -29,6 +29,9 @@ export function CreateBookmarkForm() {
 
   const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      url: "",
+    },
   });
 
   const submit = useCallback(

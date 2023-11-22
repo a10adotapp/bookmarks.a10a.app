@@ -16,6 +16,8 @@ export async function GET(
     };
   },
 ) {
+  const requestUrl = new URL(request.url);
+
   try {
     const session = await auth();
 
@@ -44,7 +46,7 @@ export async function GET(
 
       if (!response.ok) {
         console.error(
-          `[${request.method} ${request.url}] err: ${new Error(
+          `[${request.method} ${requestUrl.pathname}] err: ${new Error(
             `fetch failed (${JSON.stringify({
               url: bookmark.imageUrl,
             })})`,
@@ -67,7 +69,7 @@ export async function GET(
 
       if (!fileType) {
         console.error(
-          `[${request.method} ${request.url}] err: ${new Error(
+          `[${request.method} ${requestUrl.pathname}] err: ${new Error(
             `unexpected file type (${JSON.stringify({
               url: bookmark.imageUrl,
             })})`,
@@ -89,7 +91,9 @@ export async function GET(
       );
 
       console.log(
-        `[${request.method} ${request.url}] image downloaded (${JSON.stringify({
+        `[${request.method} ${
+          requestUrl.pathname
+        }] image downloaded (${JSON.stringify({
           filepath,
         })})`,
       );
@@ -138,7 +142,7 @@ export async function GET(
       },
     });
   } catch (err) {
-    console.error(`[${request.method} ${request.url}] err: ${err}`);
+    console.error(`[${request.method} ${requestUrl.pathname}] err: ${err}`);
 
     return Response.json({ message: "internal server error" }, { status: 500 });
   }
