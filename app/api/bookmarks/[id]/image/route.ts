@@ -1,8 +1,9 @@
-import { auth } from "@/lib/auth/auth";
+import { authOptions } from "@/lib/auth/auth-options";
 import { sharedClient } from "@/lib/prisma-client";
 import { createHash } from "crypto";
 import { fileTypeFromBuffer } from "file-type";
 import { readFileSync, writeFileSync } from "fs";
+import { getServerSession } from "next-auth";
 import getConfig from "next/config";
 import path from "path";
 
@@ -19,7 +20,7 @@ export async function GET(
   const requestUrl = new URL(request.url);
 
   try {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
 
     if (!session) {
       return Response.json({ message: "unauthorized" }, { status: 401 });
@@ -88,14 +89,6 @@ export async function GET(
           "public/files/bookmarks",
           `${fileName}.${fileType.ext}`,
         ],
-      );
-
-      console.log(
-        `[${request.method} ${
-          requestUrl.pathname
-        }] image downloaded (${JSON.stringify({
-          filepath,
-        })})`,
       );
 
       writeFileSync(filepath, Buffer.from(responseData));

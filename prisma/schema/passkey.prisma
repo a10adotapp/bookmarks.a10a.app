@@ -1,0 +1,40 @@
+/// Passkey
+///
+/// - https://simplewebauthn.dev/docs/packages/server#additional-data-structures
+///
+/// @namespace 認証
+model Passkey {
+  userId Int @map("user_id")
+
+  /// The credential's credential ID for the public key
+  id String @map("id") @db.Text
+
+  /// The credential's public key
+  publicKey Bytes @map("public_key") @db.Blob
+
+  /// The number of times the authenticator reported it has been used.  
+  /// **Should be kept in a DB for later reference to help prevent replay attacks!**
+  counter BigInt @map("counter")
+
+  /// Whether this is a single-device or multi-device credential.  
+  /// **Should be kept in a DB for later reference!**
+  deviceType String @map("device_type")
+
+  /// Whether or not the multi-device credential has been backed up.  
+  /// Always `false` for single-device credentials.   
+  /// **Should be kept in a DB for later reference!**
+  backedUp Boolean @map("backed_up")
+
+  /// The transports of the credential record.  
+  /// `'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'`
+  transports String @map("transports")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([id(length: 255)])
+  @@map("passkeys")
+}

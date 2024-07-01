@@ -1,8 +1,9 @@
 "use server";
 
-import { auth } from "@/lib/auth/auth";
+import { authOptions } from "@/lib/auth/auth-options";
 import { sharedClient } from "@/lib/prisma-client";
-import { Bookmark } from "@/prisma/client";
+import { Bookmark } from "@/prisma/generated/client";
+import { getServerSession } from "next-auth";
 import { ActionResult } from "./action-result";
 
 export async function listBookmark({
@@ -19,7 +20,7 @@ export async function listBookmark({
   }>
 > {
   try {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
 
     if (!session) {
       throw new Error("unauthorized");

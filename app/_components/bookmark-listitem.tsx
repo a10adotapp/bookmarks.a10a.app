@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Bookmark } from "@/prisma/client";
+import { Bookmark } from "@/prisma/generated/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";

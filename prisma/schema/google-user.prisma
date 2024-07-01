@@ -1,0 +1,28 @@
+/// Googleユーザー
+///
+/// - https://developers.google.com/identity/openid-connect/openid-connect?hl=ja#an-id-tokens-payload
+///
+/// @namespace 認証
+model GoogleUser {
+  userId Int @map("user_id")
+
+  /// ユーザーの識別子。
+  /// すべての Google アカウントの中で一意であり、再利用されることはありません。
+  /// Google アカウントは、異なる時点で複数のメールアドレスを持つことができますが、sub 値は変更されません。
+  id String @unique
+
+  /// ユーザーのメールアドレス。
+  /// このクレームの値はこのアカウントに対して一意ではなく、時間の経過とともに変化する可能性があるため、ユーザー レコードにリンクするメインの識別子としてこの値を使用しないでください。
+  email String
+
+  /// 表示可能な形式でのユーザーの氏名。
+  name String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("google_users")
+}
